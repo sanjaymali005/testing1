@@ -47,7 +47,7 @@ public class BookTicketTest {
 		ArrivingIn.selectByValue("Frankfurt");
 		
 		Select Returning = new Select(driver.findElement(By.name("toMonth")));
-		Returning.selectByValue("July");
+		Returning.selectByValue("7");
 		
 		Select date1 = new Select(driver.findElement(By.name("toDay")));
 		date1.selectByValue("15");
@@ -56,12 +56,11 @@ public class BookTicketTest {
 		driver.findElement(By.cssSelector("input[name='servClass'][value='Business']")).click();
 		
 		Select Airline = new Select(driver.findElement(By.name("airline")));
-		Airline.selectByValue("Blue Skies Airlines");
+		Airline.selectByVisibleText("Blue Skies Airlines");
 		
 		driver.findElement(By.name("findFlights")).click();
 		
-				
-		
+					
 				
 	}
 
