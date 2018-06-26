@@ -4,7 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -16,16 +17,38 @@ import utils.ExcelUtility;
 
 public class BookTicketTest {
 	private WebDriver driver;
+	private int cloNum = 2;
+	private static int rowNum = 1;
+	
 
 	@Test(priority=1,dataProvider="logindata")
-	public void login(String uname,String pass) {
+	public void login(String uname,String pass) throws Exception {
+	try{
 		testing1.uname.sendKeys(uname);
 		testing1.password.sendKeys(pass);
         testing1.Login_button.click();
+        
+        WebDriverWait wait = new WebDriverWait(driver,50);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("tirpType")));
+        		
+        
         Assert.assertEquals("Find a Flight:Mercury", driver.getTitle());
+	
+        ExcelUtility.setExcelData(rowNum, cloNum, "pass");
+            
+       driver.get("http://newtours.demoaut.com/");
+        
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("userName")));
+	}catch(AssertionError e) {
+		ExcelUtility.setExcelData(rowNum, cloNum, "Fail");
+		
+	}
+	finally {
+		rowNum++;	
+	}
 	}
 	
-	@Test(priority=2)
+	/*@Test(priority=2)
 	public void findflight()
 	{
 		 
@@ -62,17 +85,14 @@ public class BookTicketTest {
 		
 					
 				
-	}
+	}*/
 
 	@DataProvider(name="logindata")
 	public String[][] login_data() throws Exception {
 		ExcelUtility.setExcelPath("Sheet1", "C:\\Users\\A06438_P5.Training\\Desktop\\Selenium Drivers\\SeleniumTestData.xlsx");
-		String username = ExcelUtility.getCellData(1, 1);
-		String password = ExcelUtility.getCellData(1, 2);
+		String[][] excelData = ExcelUtility.getExcelTable();
+		return excelData;
 		
-		return new String[][]{
-			new String[] {username,password}
-			};
 		}
 	
 	@BeforeTest

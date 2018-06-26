@@ -5,7 +5,7 @@
     <classes>
       <class name="ex.org.selenium1.BookTicketTest">
         <methods>
-          <include name="login" invocation-numbers="0"/>
+          <include name="login" invocation-numbers="0 1 2"/>
           <include name="afterTest"/>
           <include name="beforeTest"/>
         </methods>
